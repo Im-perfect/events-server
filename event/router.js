@@ -9,14 +9,21 @@ router.post("/event", (req, res, next) => {
 });
 
 router.get("/event", (req, res, next) => {
-  Event.findAll()
-    .then(events => res.send(events))
+    //pagination
+  const limit = Math.min(req.query.limit || 25, 500);
+  const offset = req.query.offset || 0;
+
+  Event.findAll({
+    limit,
+    offset
+  })
+    .then(events => res.send({events: result.rows, total: result.count }))
     .catch(next);
 });
 
 router.get("/event/:id", (req, res, next) => {
   Event.findByPk(req.params.id)
-    .then(event => res.send(event))
+    .then(event => (event ? res.send(event) : res.status(404).end()))
     .catch(next);
 });
 
