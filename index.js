@@ -3,6 +3,7 @@ const app = express()
 
 const eventRouter = require('./event/router')
 
+const cors = require('cors')
 const corsMiddleware = cors()
 app.use(corsMiddleware)
 
